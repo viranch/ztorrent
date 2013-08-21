@@ -24,13 +24,9 @@ public:
 private slots:
     void on_lineEdit_returnPressed();
     void showResults(QList<FeedItem> feeds);
-
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
-
     void on_pushButton_clicked();
-
     void on_buttonBox_rejected();
-
     void on_buttonBox_clicked(QAbstractButton *button);
 
 private:
