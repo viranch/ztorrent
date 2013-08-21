@@ -2,7 +2,7 @@
 #define ZTORRENT_H
 
 #include <QMainWindow>
-#include <QListWidgetItem>
+#include <QTreeWidgetItem>
 #include <QAbstractButton>
 
 namespace Ui {
@@ -24,7 +24,7 @@ private slots:
     void on_lineEdit_returnPressed();
     void showResults(QList<FeedItem*> feeds);
 
-    void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
+    void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
     void on_pushButton_clicked();
 
