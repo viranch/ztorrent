@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 
-class FeedItem;
+#include "feeditem.h"
 
 class SearchEngine : public QObject
 {
@@ -14,7 +14,7 @@ public:
     void search(QString searchString);
     
 signals:
-    void finished(QList<FeedItem*> feeds);
+    void finished(QList<FeedItem> feeds);
     
 private slots:
     void parseReply(QNetworkReply* reply);

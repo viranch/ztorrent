@@ -5,12 +5,13 @@
 #include <QTreeWidgetItem>
 #include <QAbstractButton>
 
+#include "feeditem.h"
+
 namespace Ui {
 class ZTorrent;
 }
 
 class SearchEngine;
-class FeedItem;
 
 class ZTorrent : public QMainWindow
 {
@@ -22,7 +23,7 @@ public:
     
 private slots:
     void on_lineEdit_returnPressed();
-    void showResults(QList<FeedItem*> feeds);
+    void showResults(QList<FeedItem> feeds);
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 

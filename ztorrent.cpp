@@ -1,7 +1,6 @@
 #include "ztorrent.h"
 #include "ui_ztorrent.h"
 #include "searchengine.h"
-#include "feeditem.h"
 
 #include <QClipboard>
 
@@ -15,7 +14,7 @@ ZTorrent::ZTorrent(QWidget *parent) :
     ui->treeWidget->header()->setResizeMode(2, QHeaderView::ResizeToContents);
     ui->treeWidget->header()->setResizeMode(0, QHeaderView::Stretch);
 
-    connect(m_engine, SIGNAL(finished(QList<FeedItem*>)), this, SLOT(showResults(QList<FeedItem*>)));
+    connect(m_engine, SIGNAL(finished(QList<FeedItem>)), this, SLOT(showResults(QList<FeedItem>)));
 }
 
 ZTorrent::~ZTorrent()
@@ -29,11 +28,10 @@ void ZTorrent::on_lineEdit_returnPressed()
     m_engine->search(ui->lineEdit->text());
 }
 
-void ZTorrent::showResults(QList<FeedItem*> feeds)
+void ZTorrent::showResults(QList<FeedItem> feeds)
 {
     ui->treeWidget->clear();
-    foreach(FeedItem* f, feeds) {
-        FeedItem feed = *f;
+    foreach(FeedItem feed, feeds) {
         QStringList cols;
         cols << feed["title"] << feed["size"] << feed["seeds"]+"/"+feed["peers"];
         QTreeWidgetItem* i = new QTreeWidgetItem(ui->treeWidget, cols);

@@ -1,5 +1,4 @@
 #include "searchengine.h"
-#include "feeditem.h"
 
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -24,11 +23,11 @@ void SearchEngine::parseReply(QNetworkReply *reply)
     doc.setContent(reply->readAll());
     QDomElement root = doc.documentElement();
     QDomNodeList domItems = root.elementsByTagName("item");
-    QList<FeedItem*> feeds;
+    QList<FeedItem> feeds;
 
     for(int i=0; i<domItems.size(); i++) {
         QDomElement domItem = domItems.at(i).toElement();
-        feeds << new FeedItem(domItem);
+        feeds << FeedItem(domItem);
     }
 
     emit finished(feeds);
