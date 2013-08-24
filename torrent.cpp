@@ -13,6 +13,8 @@ Torrent::Torrent(QDomElement elem) :
     addChild("seeds", rx.cap(2));
     addChild("peers", rx.cap(3));
     addChild("hash", rx.cap(4).toUpper());
+    QString filename = property("title").replace(' ', '.').toLower();
+    addChild("torcache", "http://torcache.net/torrent/"+property("hash")+".torrent?title="+filename);
 }
 
 void Torrent::addChild(QString tagName, QString text) {

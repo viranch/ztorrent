@@ -36,7 +36,7 @@ void ZTorrent::showResults(QList<Torrent> torrents)
         QStringList cols;
         cols << torrent["title"] << torrent["size"] << torrent["seeds"]+"/"+torrent["peers"];
         QTreeWidgetItem* i = new QTreeWidgetItem(ui->treeWidget, cols);
-        i->setData(0, Qt::UserRole, torrent["hash"]);
+        i->setData(0, Qt::UserRole, torrent["torcache"]);
     }
     ui->statusBar->showMessage("Search complete. Double click on an item to copy the link to clipboard.");
 }
@@ -44,9 +44,7 @@ void ZTorrent::showResults(QList<Torrent> torrents)
 void ZTorrent::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     Q_UNUSED(column);
-    QString filename = item->text(0).replace(' ', '.').toLower();
-    QString hash = item->data(0, Qt::UserRole).toString();
-    QString torcache = "http://torcache.net/torrent/"+hash+".torrent?title="+filename;
+    QString torcache = item->data(0, Qt::UserRole).toString();
     QApplication::clipboard()->setText(torcache);
     ui->statusBar->showMessage("Link copied to clipboad", 5000);
 }
