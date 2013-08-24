@@ -5,7 +5,7 @@
 #include <QTreeWidgetItem>
 #include <QAbstractButton>
 
-#include "feeditem.h"
+#include "torrent.h"
 
 namespace Ui {
 class ZTorrent;
@@ -23,7 +23,7 @@ public:
 
 private slots:
     void on_lineEdit_returnPressed();
-    void showResults(QList<FeedItem> feeds);
+    void showResults(QList<Torrent> torrents);
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_pushButton_clicked();
     void on_buttonBox_rejected();

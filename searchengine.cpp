@@ -28,12 +28,12 @@ void SearchEngine::parseReply(QNetworkReply *reply)
     doc.setContent(reply->readAll());
     QDomElement root = doc.documentElement();
     QDomNodeList domItems = root.elementsByTagName("item");
-    QList<FeedItem> feeds;
+    QList<Torrent> torrents;
 
     for(int i=0; i<domItems.size(); i++) {
         QDomElement domItem = domItems.at(i).toElement();
-        feeds << FeedItem(domItem);
+        torrents << Torrent(domItem);
     }
 
-    emit finished(feeds);
+    emit finished(torrents);
 }

@@ -16,10 +16,10 @@ SOURCES +=\
         ztorrent.cpp \
     searchengine.cpp \
     main.cpp \
-    feeditem.cpp
+    torrent.cpp
 
 HEADERS  += ztorrent.h \
     searchengine.h \
-    feeditem.h
+    torrent.h
 
 FORMS    += ztorrent.ui

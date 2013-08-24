@@ -1,8 +1,8 @@
-#include "feeditem.h"
+#include "torrent.h"
 
 #include <QRegExp>
 
-FeedItem::FeedItem(QDomElement elem) :
+Torrent::Torrent(QDomElement elem) :
     QDomElement(elem)
 {
     QString desc = property("description");
@@ -15,7 +15,7 @@ FeedItem::FeedItem(QDomElement elem) :
     addChild("hash", rx.cap(4).toUpper());
 }
 
-void FeedItem::addChild(QString tagName, QString text) {
+void Torrent::addChild(QString tagName, QString text) {
     QDomDocument doc;
 
     QDomElement childNode = doc.createElement(tagName);

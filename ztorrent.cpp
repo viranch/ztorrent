@@ -14,7 +14,7 @@ ZTorrent::ZTorrent(QWidget *parent) :
     ui->treeWidget->header()->setResizeMode(2, QHeaderView::ResizeToContents);
     ui->treeWidget->header()->setResizeMode(0, QHeaderView::Stretch);
 
-    connect(m_engine, SIGNAL(finished(QList<FeedItem>)), this, SLOT(showResults(QList<FeedItem>)));
+    connect(m_engine, SIGNAL(finished(QList<Torrent>)), this, SLOT(showResults(QList<Torrent>)));
 }
 
 ZTorrent::~ZTorrent()
@@ -29,14 +29,14 @@ void ZTorrent::on_lineEdit_returnPressed()
     m_engine->search(ui->lineEdit->text());
 }
 
-void ZTorrent::showResults(QList<FeedItem> feeds)
+void ZTorrent::showResults(QList<Torrent> torrents)
 {
     ui->treeWidget->clear();
-    foreach(FeedItem feed, feeds) {
+    foreach(Torrent torrent, torrents) {
         QStringList cols;
-        cols << feed["title"] << feed["size"] << feed["seeds"]+"/"+feed["peers"];
+        cols << torrent["title"] << torrent["size"] << torrent["seeds"]+"/"+torrent["peers"];
         QTreeWidgetItem* i = new QTreeWidgetItem(ui->treeWidget, cols);
-        i->setData(0, Qt::UserRole, feed["hash"]);
+        i->setData(0, Qt::UserRole, torrent["hash"]);
     }
     ui->statusBar->showMessage("Search complete. Double click on an item to copy the link to clipboard.");
 }

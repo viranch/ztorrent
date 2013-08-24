@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 
-#include "feeditem.h"
+#include "torrent.h"
 
 class SearchEngine : public QObject
 {
@@ -16,7 +16,7 @@ public:
     void search(QString searchString);
 
 signals:
-    void finished(QList<FeedItem> feeds);
+    void finished(QList<Torrent> torrents);
 
 private slots:
     void parseReply(QNetworkReply* reply);

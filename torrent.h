@@ -1,13 +1,13 @@
-#ifndef FEEDITEM_H
-#define FEEDITEM_H
+#ifndef TORRENT_H
+#define TORRENT_H
 
 #include <QDomElement>
 #include <QString>
 
-class FeedItem : public QDomElement
+class Torrent : public QDomElement
 {
 public:
-    FeedItem(QDomElement elem);
+    Torrent(QDomElement elem);
 
     inline QString property(QString tag) { return firstChildElement(tag).text(); }
 
@@ -17,4 +17,4 @@ private:
     void addChild(QString tagName, QString text);
 };
 
-#endif // FEEDITEM_H
+#endif // TORRENT_H
