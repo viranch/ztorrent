@@ -20,6 +20,7 @@ ZTorrent::ZTorrent(QWidget *parent) :
 ZTorrent::~ZTorrent()
 {
     delete ui;
+    delete m_engine;
 }
 
 void ZTorrent::on_lineEdit_returnPressed()
