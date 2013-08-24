@@ -11,6 +11,8 @@ class SearchEngine : public QObject
     Q_OBJECT
 public:
     explicit SearchEngine(QObject *parent = 0);
+    ~SearchEngine();
+
     void search(QString searchString);
 
 signals:

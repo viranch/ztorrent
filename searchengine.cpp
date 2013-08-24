@@ -11,6 +11,11 @@ SearchEngine::SearchEngine(QObject *parent) :
     connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseReply(QNetworkReply*)));
 }
 
+SearchEngine::~SearchEngine()
+{
+    delete m_manager;
+}
+
 void SearchEngine::search(QString searchString)
 {
     QUrl searchUrl = QUrl("http://torrentz.in/feed?q="+searchString);
