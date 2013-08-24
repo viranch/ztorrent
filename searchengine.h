@@ -12,16 +12,16 @@ class SearchEngine : public QObject
 public:
     explicit SearchEngine(QObject *parent = 0);
     void search(QString searchString);
-    
+
 signals:
     void finished(QList<FeedItem> feeds);
-    
+
 private slots:
     void parseReply(QNetworkReply* reply);
 
 private:
     QNetworkAccessManager *m_manager;
-    
+
 };
 
 #endif // SEARCHENGINE_H

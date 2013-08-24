@@ -16,11 +16,11 @@ class SearchEngine;
 class ZTorrent : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit ZTorrent(QWidget *parent = 0);
     ~ZTorrent();
-    
+
 private slots:
     void on_lineEdit_returnPressed();
     void showResults(QList<FeedItem> feeds);
