@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 #include "torrent.h"
 
@@ -17,6 +18,7 @@ public:
 
 signals:
     void finished(QList<Torrent> torrents);
+    void error(QNetworkReply::NetworkError e);
 
 private slots:
     void parseReply(QNetworkReply* reply);

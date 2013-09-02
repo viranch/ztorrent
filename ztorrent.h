@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTreeWidgetItem>
 #include <QAbstractButton>
+#include <QNetworkReply>
 
 #include "torrent.h"
 
@@ -24,6 +25,7 @@ public:
 private slots:
     void on_lineEdit_returnPressed();
     void showResults(QList<Torrent> torrents);
+    void handleError(QNetworkReply::NetworkError e);
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_pushButton_clicked();
     void on_buttonBox_rejected();

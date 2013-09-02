@@ -3,6 +3,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QDomDocument>
+#include <QMessageBox>
 
 SearchEngine::SearchEngine(QObject *parent) :
     QObject(parent),
@@ -24,16 +25,23 @@ void SearchEngine::search(QString searchString)
 
 void SearchEngine::parseReply(QNetworkReply *reply)
 {
-    QDomDocument doc;
-    doc.setContent(reply->readAll());
-    QDomElement root = doc.documentElement();
-    QDomNodeList domItems = root.elementsByTagName("item");
-    QList<Torrent> torrents;
-
-    for(int i=0; i<domItems.size(); i++) {
-        QDomElement domItem = domItems.at(i).toElement();
-        torrents << Torrent(domItem);
+    if (reply->error() != QNetworkReply::NoError) {
+        emit error(reply->error());
     }
+    else {
+        QDomDocument doc;
+        doc.setContent(reply->readAll());
+        QDomElement root = doc.documentElement();
+        QDomNodeList domItems = root.elementsByTagName("item");
+        QList<Torrent> torrents;
 
-    emit finished(torrents);
+        for(int i=0; i<domItems.size(); i++) {
+            QDomElement domItem = domItems.at(i).toElement();
+            torrents << Torrent(domItem);
+        }
+
+        emit finished(torrents);
+    }
+    reply->close();
+    reply->deleteLater();
 }
