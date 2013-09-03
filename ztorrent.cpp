@@ -11,9 +11,9 @@ ZTorrent::ZTorrent(QWidget *parent) :
     m_engine(new SearchEngine(this))
 {
     ui->setupUi(this);
-    ui->treeWidget->header()->setResizeMode(1, QHeaderView::ResizeToContents);
-    ui->treeWidget->header()->setResizeMode(2, QHeaderView::ResizeToContents);
-    ui->treeWidget->header()->setResizeMode(0, QHeaderView::Stretch);
+    ui->treeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    ui->treeWidget->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 
     connect(m_engine, SIGNAL(finished(QList<Torrent>)), this, SLOT(showResults(QList<Torrent>)));
     connect(m_engine, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
