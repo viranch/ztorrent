@@ -7,12 +7,15 @@
 #include <QNetworkReply>
 
 #include "torrent.h"
+#include "trbackend.h"
 
 namespace Ui {
 class ZTorrent;
 }
 
 class SearchEngine;
+class Transmission;
+class Settings;
 
 class ZTorrent : public QMainWindow
 {
@@ -25,15 +28,22 @@ public:
 private slots:
     void on_lineEdit_returnPressed();
     void showResults(QList<Torrent> torrents);
+    void torrentAdded(QString result, QString name);
     void handleError(QNetworkReply::NetworkError e);
+    void copyToClipboard(QTreeWidgetItem *item);
+    void addToTransmission(QTreeWidgetItem *item, TrBackend backend);
+
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
-    void on_pushButton_clicked();
-    void on_buttonBox_rejected();
+    void on_goBtn_clicked();
     void on_buttonBox_clicked(QAbstractButton *button);
+    void on_treeWidget_customContextMenuRequested(const QPoint &pos);
+    void on_settingsBtn_clicked();
 
 private:
     Ui::ZTorrent *ui;
     SearchEngine *m_engine;
+    Transmission *m_transmission;
+    Settings *m_settings;
 };
 
 #endif // ZTORRENT_H

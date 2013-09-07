@@ -16,10 +16,19 @@ SOURCES +=\
         ztorrent.cpp \
     searchengine.cpp \
     main.cpp \
-    torrent.cpp
+    torrent.cpp \
+    transmission.cpp \
+    settings.cpp \
+    trdialog.cpp
 
 HEADERS  += ztorrent.h \
     searchengine.h \
-    torrent.h
+    torrent.h \
+    transmission.h \
+    trbackend.h \
+    settings.h \
+    trdialog.h
 
-FORMS    += ztorrent.ui
+FORMS    += ztorrent.ui \
+    settings.ui \
+    trdialog.ui
