@@ -16,6 +16,7 @@ public:
 
 signals:
     void finished(QString result, QString name);
+    void error(QNetworkReply::NetworkError e);
 
 public slots:
 
