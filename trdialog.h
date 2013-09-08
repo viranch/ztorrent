@@ -18,6 +18,7 @@ public:
 
     TrBackend getBackend();
     void loadBackend(TrBackend backend);
+    void reset();
 
 private:
     Ui::TrDialog *ui;

@@ -3,6 +3,7 @@
 #include "trdialog.h"
 
 #include <QSettings>
+#include <QMessageBox>
 
 Settings::Settings(QWidget *parent) :
     QDialog(parent),
@@ -89,6 +90,7 @@ void Settings::on_buttonBox2_accepted()
 
 void Settings::on_addBtn_clicked()
 {
+    m_trDlg->reset();
     if (m_trDlg->exec() != QDialog::Accepted)
         return;
 
@@ -107,6 +109,11 @@ void Settings::on_addBtn_clicked()
 
 void Settings::on_removeBtn_clicked()
 {
+    if (ui->listWidget->selectedItems().size() == 0) {
+        QMessageBox::warning(this, "Error", "No server selected");
+        return;
+    }
+
     int current = ui->listWidget->currentRow();
     QList<TrBackend> trBackends = backends();
     if (trBackends[current]["is_default"].toBool()) {
@@ -140,6 +147,11 @@ void Settings::on_defaultBtn_clicked()
 
 void Settings::on_editBtn_clicked()
 {
+    if (ui->listWidget->selectedItems().size() == 0) {
+        QMessageBox::warning(this, "Error", "No server selected");
+        return;
+    }
+
     int current = ui->listWidget->currentRow();
 
     QList<TrBackend> trBackends = backends();

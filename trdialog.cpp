@@ -36,4 +36,17 @@ void TrDialog::loadBackend(TrBackend b)
 
     ui->userEdit->setText(user);
     ui->passEdit->setText(b["passwd"].toString());
+
+    ui->hostEdit->setFocus();
+}
+
+void TrDialog::reset()
+{
+    ui->hostEdit->clear();
+    ui->portEdit->setText("9091");
+    ui->pathEdit->setText("/transmission/rpc");
+    ui->checkBox->setChecked(false);
+    ui->userEdit->clear();
+    ui->passEdit->clear();
+    ui->hostEdit->setFocus();
 }
