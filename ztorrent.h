@@ -30,8 +30,8 @@ private slots:
     void showResults(QList<Torrent> torrents);
     void torrentAdded(QString result, QString name);
     void handleError(QNetworkReply::NetworkError e);
-    void copyToClipboard(QString hash);
-    void addToTransmission(QString hash, TrBackend backend);
+    void copyToClipboard(Torrent t);
+    void addToTransmission(Torrent t, TrBackend backend);
     void menuAction(QAction *action);
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);

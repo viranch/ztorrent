@@ -50,7 +50,7 @@ void ZTorrent::showResults(QList<Torrent> torrents)
         QStringList cols;
         cols << torrent["title"] << torrent["size"] << torrent["seeds"]+"/"+torrent["peers"];
         QTreeWidgetItem* i = new QTreeWidgetItem(ui->treeWidget, cols);
-        i->setData(0, Qt::UserRole, torrent["hash"]);
+        i->setData(0, Qt::UserRole, QVariant::fromValue(torrent));
     }
     ui->statusBar->showMessage("Search complete. Double click on an item to execute the default action");
 }
@@ -91,14 +91,16 @@ void ZTorrent::torrentAdded(QString result, QString name)
 void ZTorrent::menuAction(QAction *action)
 {
     QString text = action->text();
-    QString hash = action->whatsThis();
+    QVariant data = action->data();
 
     if (text == "Open with browser...") {
-        QDesktopServices::openUrl(QUrl(Torrent::searchUrl(hash)));
+        QUrl link(data.value<Torrent>()["torrentzUrl"]);
+        QDesktopServices::openUrl(link);
     } else if (text == "Copy .torrent link") {
-        copyToClipboard(hash);
+        copyToClipboard(data.value<Torrent>());
     } else {
-        addToTransmission(hash, action->data().value<TrBackend>());
+        QList<QVariant> stuff = data.toList();
+        addToTransmission(stuff[0].value<Torrent>(), stuff[1].value<TrBackend>());
     }
 }
 
@@ -106,26 +108,26 @@ void ZTorrent::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column
 {
     Q_UNUSED(column);
 
-    QString hash = item->data(0, Qt::UserRole).toString();
+    Torrent t = item->data(0, Qt::UserRole).value<Torrent>();
     int act = m_settings->defaultAction();
 
     if (act == 0) {
-        copyToClipboard(hash);
+        copyToClipboard(t);
     } else if (act == 1) {
-        addToTransmission(hash, m_settings->defaultBackend());
+        addToTransmission(t, m_settings->defaultBackend());
     }
 }
 
-void ZTorrent::copyToClipboard(QString hash)
+void ZTorrent::copyToClipboard(Torrent t)
 {
-    QApplication::clipboard()->setText(Torrent::torcacheUrl(hash));
+    QApplication::clipboard()->setText(t["torcacheUrl"]);
     ui->statusBar->showMessage("Link copied to clipboad", 5000);
 }
 
-void ZTorrent::addToTransmission(QString hash, TrBackend backend)
+void ZTorrent::addToTransmission(Torrent t, TrBackend backend)
 {
     ui->treeWidget->setEnabled(false);
-    m_transmission->addTorrent(Torrent::torcacheUrl(hash), backend);
+    m_transmission->addTorrent(t["torcacheUrl"], backend);
 }
 
 void ZTorrent::on_goBtn_clicked()
@@ -149,7 +151,7 @@ void ZTorrent::on_buttonBox_clicked(QAbstractButton *button)
 void ZTorrent::on_treeWidget_customContextMenuRequested(const QPoint &pos)
 {
     QTreeWidgetItem *item = ui->treeWidget->itemAt(pos);
-    QString hash = item->data(0, Qt::UserRole).toString();
+    QVariant torrentData = item->data(0, Qt::UserRole);
 
     m_contextMenu->clear();
 
@@ -157,8 +159,8 @@ void ZTorrent::on_treeWidget_customContextMenuRequested(const QPoint &pos)
     m_contextMenu->addSeparator();
     QAction *copyAct = m_contextMenu->addAction("Copy .torrent link");
 
-    openAct->setWhatsThis(hash);
-    copyAct->setWhatsThis(hash);
+    openAct->setData(torrentData);
+    copyAct->setData(torrentData);
 
     QList<TrBackend> trBackends = m_settings->backends();
     QMenu *trMenu;
@@ -169,8 +171,10 @@ void ZTorrent::on_treeWidget_customContextMenuRequested(const QPoint &pos)
             if (b["is_default"].toBool())
                 label += " (Default)";
             QAction *trAct = trMenu->addAction(label);
-            trAct->setWhatsThis(hash);
-            trAct->setData(b);
+
+            QList<QVariant> data;
+            data << torrentData << QVariant::fromValue(b);
+            trAct->setData(data);
         }
     }
 
