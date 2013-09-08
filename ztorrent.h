@@ -30,8 +30,9 @@ private slots:
     void showResults(QList<Torrent> torrents);
     void torrentAdded(QString result, QString name);
     void handleError(QNetworkReply::NetworkError e);
-    void copyToClipboard(QTreeWidgetItem *item);
-    void addToTransmission(QTreeWidgetItem *item, TrBackend backend);
+    void copyToClipboard(QString hash);
+    void addToTransmission(QString hash, TrBackend backend);
+    void menuAction(QAction *action);
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_goBtn_clicked();
@@ -44,6 +45,7 @@ private:
     SearchEngine *m_engine;
     Transmission *m_transmission;
     Settings *m_settings;
+    QMenu *m_contextMenu;
 };
 
 #endif // ZTORRENT_H
