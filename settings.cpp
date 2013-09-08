@@ -72,7 +72,7 @@ void Settings::setBackends(QList<TrBackend> backends)
     QSettings s;
     QList<QVariant> variant;
     foreach(TrBackend b, backends) {
-        variant << QVariant(b);
+        variant << QVariant::fromValue(b);
     }
     s.setValue("backends", variant);
 }
