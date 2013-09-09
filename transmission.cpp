@@ -21,18 +21,20 @@ void Transmission::addTorrent(QString url, TrBackend backend)
     QString port = backend["port"].toString();
     QString path = backend["path"].toString();
     QUrl requestUrl = "http://"+host+":"+port+path;
+
     QNetworkRequest request(requestUrl);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     if (!m_sessionId.isNull()) {
         request.setRawHeader(TR_SESSION_HEADER, m_sessionId);
     }
+    request.setAttribute(QNetworkRequest::User, url);
+    request.setAttribute(QNetworkRequest::UserMax, backend);
 
     QVariantMap data, args;
     args["filename"] = url;
     data["method"] = "torrent-add";
     data["arguments"] = args;
     QJsonObject json = QJsonObject::fromVariantMap(data);
-    request.setAttribute(QNetworkRequest::User, url);
-    request.setAttribute(QNetworkRequest::UserMax, backend);
 
     m_manager->post(request, QJsonDocument(json).toJson());
 }
