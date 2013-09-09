@@ -48,7 +48,7 @@ void ZTorrent::showResults(QList<Torrent> torrents)
     ui->treeWidget->clear();
     foreach(Torrent torrent, torrents) {
         QStringList cols;
-        cols << torrent["title"] << torrent["size"] << torrent["seeds"]+"/"+torrent["peers"];
+        cols << torrent["title"] << torrent["size"] << torrent["seeds"]+"/"+torrent["peers"] << torrent["last_added"];
         QTreeWidgetItem* i = new QTreeWidgetItem(ui->treeWidget, cols);
         i->setData(0, Qt::UserRole, QVariant::fromValue(torrent));
     }

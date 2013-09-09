@@ -1,6 +1,7 @@
 #include "torrent.h"
 
 #include <QRegExp>
+#include <QDateTime>
 
 Torrent::Torrent(QDomElement elem) :
     QDomElement(elem)
@@ -17,6 +18,14 @@ Torrent::Torrent(QDomElement elem) :
     addChild("hash", hash);
     addChild("torcacheUrl", "http://torcache.net/torrent/"+hash.toUpper()+".torrent");
     addChild("torrentzUrl", "http://torrentz.in/"+hash.toLower());
+
+    QDateTime time_added = QDateTime::fromString(property("pubDate"), "ddd, dd MMM yyyy hh:mm:ss +0000");
+    time_added.setTimeSpec(Qt::UTC);
+    qint64 last_added_days = time_added.daysTo(QDateTime::currentDateTimeUtc());
+    if (last_added_days == 0)
+        addChild("last_added", QString::number(time_added.secsTo(QDateTime::currentDateTimeUtc()) / (60*60)) + " hours ago");
+    else
+        addChild("last_added", QString::number(last_added_days) + " days ago");
 }
 
 void Torrent::addChild(QString tagName, QString text) {

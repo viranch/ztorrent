@@ -95,6 +95,11 @@
         <string>S/P</string>
        </property>
       </column>
+      <column>
+       <property name="text">
+        <string>Last Added</string>
+       </property>
+      </column>
      </widget>
     </item>
    </layout>
