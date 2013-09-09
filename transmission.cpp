@@ -46,25 +46,21 @@ void Transmission::authenticate(QNetworkReply *reply, QAuthenticator *auth)
 
 void Transmission::parseResponse(QNetworkReply *reply)
 {
-    if (reply->error() != QNetworkReply::NoError) {
-        emit error(reply->error());
+    int code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (code == 409) {
+        m_sessionId = reply->rawHeader(TR_SESSION_HEADER);
+        QString url = reply->request().attribute(QNetworkRequest::User).toString();
+        TrBackend backend = reply->request().attribute(QNetworkRequest::UserMax).toMap();
+        addTorrent(url, backend);
     } else {
-        int code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        if (code == 409) {
-            m_sessionId = reply->rawHeader(TR_SESSION_HEADER);
-            QString url = reply->request().attribute(QNetworkRequest::User).toString();
-            TrBackend backend = reply->request().attribute(QNetworkRequest::UserMax).toMap();
-            addTorrent(url, backend);
-        } else {
-            QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
-            QVariantMap data = jsonDoc.object().toVariantMap();
-            QString result = data["result"].toString();
-            QString name;
-            if (result == "success") {
-                name = data["arguments"].toMap()["torrent-added"].toMap()["name"].toString();
-            }
-            emit finished(result, name);
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
+        QVariantMap data = jsonDoc.object().toVariantMap();
+        QString result = data["result"].toString();
+        QString name;
+        if (result == "success") {
+            name = data["arguments"].toMap()["torrent-added"].toMap()["name"].toString();
         }
+        emit finished(result, name);
     }
     reply->close();
     reply->deleteLater();

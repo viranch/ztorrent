@@ -24,10 +24,7 @@ ZTorrent::ZTorrent(QWidget *parent) :
 
     connect(m_engine, SIGNAL(finished(QList<Torrent>)), this, SLOT(showResults(QList<Torrent>)));
     connect(m_engine, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
-
     connect(m_transmission, SIGNAL(finished(QString,QString)), this, SLOT(torrentAdded(QString,QString)));
-    connect(m_transmission, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
-
     connect(m_contextMenu, SIGNAL(triggered(QAction*)), this, SLOT(menuAction(QAction*)));
 }
 
@@ -68,11 +65,11 @@ void ZTorrent::handleError(QNetworkReply::NetworkError error)
     case QNetworkReply::TemporaryNetworkFailureError:
         message = "Connection dropped"; break;
     case QNetworkReply::HostNotFoundError:
-        message = "Could not resolve hostname"; break;
+        message = "Could not resolve torrentz.in"; break;
     case QNetworkReply::TimeoutError:
         message = "Connection timed out"; break;
     case QNetworkReply::ContentNotFoundError:
-        message = "Content not found"; break;
+        message = "404 Not Found"; break;
     case QNetworkReply::UnknownNetworkError:
     case QNetworkReply::UnknownContentError:
     default:
