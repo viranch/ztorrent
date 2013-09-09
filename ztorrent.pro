@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network xml
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui widgets network xml
 
 TARGET = ztorrent
 TEMPLATE = app
