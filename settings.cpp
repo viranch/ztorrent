@@ -11,7 +11,16 @@ Settings::Settings(QWidget *parent) :
     m_trDlg(new TrDialog(this))
 {
     ui->setupUi(this);
+
+    connect(ui->buttonBox2, SIGNAL(accepted()), this, SLOT(saveSettings()));
+    connect(ui->buttonBox2, SIGNAL(rejected()), this, SLOT(reload()));
+
     reload();
+}
+
+Settings::~Settings()
+{
+    delete ui;
 }
 
 void Settings::reload()
@@ -30,11 +39,6 @@ void Settings::reload()
     } else if (act == 1) {
         ui->addTrBtn->setChecked(true);
     }
-}
-
-Settings::~Settings()
-{
-    delete ui;
 }
 
 TrBackend Settings::defaultBackend()
@@ -84,7 +88,7 @@ void Settings::setBackends(QList<TrBackend> backends)
     reload();
 }
 
-void Settings::on_buttonBox2_accepted()
+void Settings::saveSettings()
 {
     QSettings s;
     int which = 0;
@@ -160,9 +164,4 @@ void Settings::on_editBtn_clicked()
 
     trBackends[current] = m_trDlg->getBackend();
     setBackends(trBackends);
-}
-
-void Settings::on_buttonBox2_rejected()
-{
-    reload();
 }

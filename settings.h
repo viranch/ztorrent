@@ -24,13 +24,11 @@ public:
 
 private slots:
     void reload();
-    void on_buttonBox2_accepted();
+    void saveSettings();
     void on_addBtn_clicked();
     void on_removeBtn_clicked();
     void on_defaultBtn_clicked();
     void on_editBtn_clicked();
-
-    void on_buttonBox2_rejected();
 
 private:
     void setBackends(QList<TrBackend> backends);
