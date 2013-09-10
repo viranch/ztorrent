@@ -11,7 +11,12 @@ Settings::Settings(QWidget *parent) :
     m_trDlg(new TrDialog(this))
 {
     ui->setupUi(this);
+    reload();
+}
 
+void Settings::reload()
+{
+    ui->listWidget->clear();
     foreach (TrBackend backend, backends()) {
         QString label = backend["host"].toString();
         if (backend["is_default"].toBool())
@@ -76,6 +81,7 @@ void Settings::setBackends(QList<TrBackend> backends)
         variant << QVariant::fromValue(b);
     }
     s.setValue("backends", variant);
+    reload();
 }
 
 void Settings::on_buttonBox2_accepted()
@@ -100,11 +106,6 @@ void Settings::on_addBtn_clicked()
     trBackends << backend;
 
     setBackends(trBackends);
-
-    QString label = backend["host"].toString();
-    if (backend["is_default"].toBool())
-        label += " (Default)";
-    ui->listWidget->addItem(label);
 }
 
 void Settings::on_removeBtn_clicked()
@@ -116,6 +117,8 @@ void Settings::on_removeBtn_clicked()
 
     int current = ui->listWidget->currentRow();
     QList<TrBackend> trBackends = backends();
+
+    // select an alternate default, if this one is the default
     if (trBackends[current]["is_default"].toBool()) {
         for (int i=0; i<trBackends.size(); i++) {
             if (i != current) {
@@ -126,21 +129,16 @@ void Settings::on_removeBtn_clicked()
             }
         }
     }
+
     trBackends.takeAt(current);
     setBackends(trBackends);
-    ui->listWidget->takeItem(current);
 }
 
 void Settings::on_defaultBtn_clicked()
 {
     QList<TrBackend> trBackends = backends();
     for (int i=0; i<ui->listWidget->count(); i++) {
-        bool is_default = ui->listWidget->currentRow()==i;
-        trBackends[i]["is_default"] = is_default;
-        QString label = trBackends[i]["host"].toString();
-        if (is_default)
-            label += " (Default)";
-        ui->listWidget->item(i)->setText(label);
+        trBackends[i]["is_default"] = ui->listWidget->currentRow()==i;
     }
     setBackends(trBackends);
 }
@@ -162,4 +160,9 @@ void Settings::on_editBtn_clicked()
 
     trBackends[current] = m_trDlg->getBackend();
     setBackends(trBackends);
+}
+
+void Settings::on_buttonBox2_rejected()
+{
+    reload();
 }
