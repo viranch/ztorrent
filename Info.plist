@@ -2,15 +2,15 @@
 <!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
 <plist version="0.9">
 <dict>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
     <key>CFBundleGetInfoString</key>
-	<string>Created by Qt/QMake</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleIdentifier</key>
+    <string>Created by Qt/QMake</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleIdentifier</key>
     <string>org.viranch.ztorrent</string>
-	<key>CFBundleExecutable</key>
-	<string>@EXECUTABLE@</string>
+    <key>CFBundleExecutable</key>
+    <string>@EXECUTABLE@</string>
 </dict>
 </plist>
