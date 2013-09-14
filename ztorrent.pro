@@ -30,3 +30,5 @@ HEADERS  += ztorrent.h \
 FORMS    += ztorrent.ui \
     settings.ui \
     trdialog.ui
+
+QMAKE_INFO_PLIST = Info.plist
