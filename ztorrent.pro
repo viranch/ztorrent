@@ -27,6 +27,9 @@ HEADERS  += ztorrent.h \
     settings.h \
     trdialog.h
 
+RESOURCES += \
+    resources.qrc
+
 FORMS    += ztorrent.ui \
     settings.ui \
     trdialog.ui
