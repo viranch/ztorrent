@@ -60,7 +60,11 @@ void Transmission::parseResponse(QNetworkReply *reply)
         QString result = data["result"].toString();
         QString name;
         if (result == "success") {
-            name = data["arguments"].toMap()["torrent-added"].toMap()["name"].toString();
+            QVariantMap args = data["arguments"].toMap();
+            if (args.contains("torrent-added"))
+                name = args["torrent-added"].toMap()["name"].toString();
+            else
+                result = "Duplicate torrent";
         }
         emit finished(result, name);
     }
