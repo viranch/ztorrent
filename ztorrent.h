@@ -33,12 +33,14 @@ private slots:
     void copyToClipboard(Torrent t);
     void addToTransmission(Torrent t, TrBackend backend);
     void menuAction(QAction *action);
+    void updateActionInfo();
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_goBtn_clicked();
     void on_buttonBox_clicked(QAbstractButton *button);
     void on_treeWidget_customContextMenuRequested(const QPoint &pos);
     void on_settingsBtn_clicked();
+    void on_actionLabel_linkActivated(const QString &link);
 
 private:
     Ui::ZTorrent *ui;

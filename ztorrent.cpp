@@ -22,6 +22,8 @@ ZTorrent::ZTorrent(QWidget *parent) :
     ui->treeWidget->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 
+    updateActionInfo();
+
     connect(m_engine, SIGNAL(finished(QList<Torrent>)), this, SLOT(showResults(QList<Torrent>)));
     connect(m_engine, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
     connect(m_transmission, SIGNAL(finished(QString,QString)), this, SLOT(torrentAdded(QString,QString)));
@@ -35,6 +37,22 @@ ZTorrent::~ZTorrent()
     delete m_transmission;
     delete m_settings;
     delete m_contextMenu;
+}
+
+void ZTorrent::updateActionInfo()
+{
+    int action = m_settings->defaultAction();
+    if (action == 0) {
+        ui->actionLabel->setText("Default action: copy .torrent link to clipboard");
+    }
+    else {
+        TrBackend b = m_settings->defaultBackend();
+        QString host = b["host"].toString();
+        QString port = b["port"].toString();
+        QString link = QString("http://%1:%2/").arg(host).arg(port);
+        QString html = QString("<a href='%1'>%2</a>").arg(link).arg(host);
+        ui->actionLabel->setText("Default action: add to download queue at "+html);
+    }
 }
 
 void ZTorrent::on_lineEdit_returnPressed()
@@ -184,4 +202,10 @@ void ZTorrent::on_treeWidget_customContextMenuRequested(const QPoint &pos)
 void ZTorrent::on_settingsBtn_clicked()
 {
     m_settings->exec();
+    updateActionInfo();
+}
+
+void ZTorrent::on_actionLabel_linkActivated(const QString &link)
+{
+    QDesktopServices::openUrl(QUrl(link));
 }
