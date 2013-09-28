@@ -19,7 +19,7 @@ void Transmission::addTorrent(QString url, TrBackend backend)
 {
     QString host = backend["host"].toString();
     QString port = backend["port"].toString();
-    QString path = backend["path"].toString();
+    QString path = "/transmission/rpc";
     QUrl requestUrl = "http://"+host+":"+port+path;
 
     QNetworkRequest request(requestUrl);

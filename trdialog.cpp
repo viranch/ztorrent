@@ -18,7 +18,6 @@ TrBackend TrDialog::getBackend()
     TrBackend b;
     b["host"] = ui->hostEdit->text();
     b["port"] = ui->portEdit->text();
-    b["path"] = ui->pathEdit->text();
     b["user"] = ui->userEdit->text();
     b["passwd"] = ui->passEdit->text();
 
@@ -29,7 +28,6 @@ void TrDialog::loadBackend(TrBackend b)
 {
     ui->hostEdit->setText(b["host"].toString());
     ui->portEdit->setText(b["port"].toString());
-    ui->pathEdit->setText(b["path"].toString());
 
     QString user = b["user"].toString();
     ui->checkBox->setChecked(!user.isEmpty());
@@ -44,7 +42,6 @@ void TrDialog::reset()
 {
     ui->hostEdit->clear();
     ui->portEdit->setText("9091");
-    ui->pathEdit->setText("/transmission/rpc");
     ui->checkBox->setChecked(false);
     ui->userEdit->clear();
     ui->passEdit->clear();
