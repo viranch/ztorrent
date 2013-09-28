@@ -21,7 +21,6 @@ public slots:
 
 private slots:
     void parseResponse(QNetworkReply *reply);
-    void authenticate(QNetworkReply *reply, QAuthenticator *auth);
 
 private:
     QNetworkAccessManager *m_manager;

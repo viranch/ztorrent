@@ -10,17 +10,18 @@ Transmission::Transmission(QObject *parent) :
     QObject(parent),
     m_manager(new QNetworkAccessManager(this))
 {
-    connect(m_manager, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
-            this, SLOT(authenticate(QNetworkReply*,QAuthenticator*)));
     connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseResponse(QNetworkReply*)));
 }
 
 void Transmission::addTorrent(QString url, TrBackend backend)
 {
-    QString host = backend["host"].toString();
-    QString port = backend["port"].toString();
-    QString path = "/transmission/rpc";
-    QUrl requestUrl = "http://"+host+":"+port+path;
+    QUrl requestUrl;
+    requestUrl.setScheme("http");
+    requestUrl.setHost(backend["host"].toString());
+    requestUrl.setPort(backend["port"].toInt());
+    requestUrl.setPath("/transmission/rpc");
+    requestUrl.setUserName(backend["user"].toString());
+    requestUrl.setPassword(backend["passwd"].toString());
 
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -37,13 +38,6 @@ void Transmission::addTorrent(QString url, TrBackend backend)
     QJsonObject json = QJsonObject::fromVariantMap(data);
 
     m_manager->post(request, QJsonDocument(json).toJson());
-}
-
-void Transmission::authenticate(QNetworkReply *reply, QAuthenticator *auth)
-{
-    TrBackend b = reply->request().attribute(QNetworkRequest::UserMax).toMap();
-    auth->setUser(b["user"].toString());
-    auth->setPassword(b["passwd"].toString());
 }
 
 void Transmission::parseResponse(QNetworkReply *reply)
