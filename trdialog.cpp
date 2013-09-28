@@ -30,7 +30,7 @@ void TrDialog::loadBackend(TrBackend b)
     ui->portEdit->setText(b["port"].toString());
 
     QString user = b["user"].toString();
-    ui->checkBox->setChecked(!user.isEmpty());
+    ui->authBox->setChecked(!user.isEmpty());
 
     ui->userEdit->setText(user);
     ui->passEdit->setText(b["passwd"].toString());
@@ -42,7 +42,7 @@ void TrDialog::reset()
 {
     ui->hostEdit->clear();
     ui->portEdit->setText("9091");
-    ui->checkBox->setChecked(false);
+    ui->authBox->setChecked(false);
     ui->userEdit->clear();
     ui->passEdit->clear();
     ui->hostEdit->setFocus();
