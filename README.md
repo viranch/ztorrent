@@ -3,7 +3,38 @@ ztorrent
 
 A desktop client to quickly do a search for torrents and get links to .torrent files or add to Transmission for download. Backed by [Torrentz](http://torrentz.eu) and [Torcache](http://torcache.net).
 
-How-to:
+Install
+---------
+
+### Qt 5.x Dependency
+
+This application is built using Qt 5.x, so you would need to have this before you can compile the source code.
+
+Check the version with:
+
+    qmake -v
+
+Look at the version of Qt libraries, not the version of `qmake` itself. Install relevant package if you don't have the `qmake` command.
+
+### Build
+
+Download and compile:
+
+    git clone git://github.com/viranch/ztorrent.git
+    cd ztorrent
+    mkdir build && cd build
+    qmake ..
+    make
+
+Run:
+
+    ./ztorrent
+
+Optionally, install to `/usr/bin`:
+
+    sudo cp build/ztorrent /usr/bin/ztorrent
+
+Use
 ---------
 
 1. Search for any torrent in this app and you will get search results from [Torrentz](http://torrentz.com/) with size/seeds/peers info.
