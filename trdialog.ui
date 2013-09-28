@@ -101,6 +101,7 @@
  <tabstops>
   <tabstop>hostEdit</tabstop>
   <tabstop>portEdit</tabstop>
+  <tabstop>authBox</tabstop>
   <tabstop>userEdit</tabstop>
   <tabstop>passEdit</tabstop>
   <tabstop>buttonBox3</tabstop>
