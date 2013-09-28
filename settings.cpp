@@ -162,6 +162,8 @@ void Settings::on_editBtn_clicked()
     if (m_trDlg->exec() != QDialog::Accepted)
         return;
 
+    bool is_default = trBackends[current]["is_default"].toBool();
     trBackends[current] = m_trDlg->getBackend();
+    trBackends[current]["is_default"] = is_default;
     setBackends(trBackends);
 }
