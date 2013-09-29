@@ -18,6 +18,8 @@ Look at the version of Qt libraries, not the version of `qmake` itself. Install 
 
 ### Build
 
+Following applies to Linux only; for MacOS build, check the [releases](https://github.com/viranch/ztorrent/releases) section.
+
 Download and compile:
 
     git clone git://github.com/viranch/ztorrent.git
