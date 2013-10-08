@@ -48,6 +48,7 @@ private:
     Transmission *m_transmission;
     Settings *m_settings;
     QMenu *m_contextMenu;
+    QPair<Torrent,TrBackend> m_lastAction;
 };
 
 #endif // ZTORRENT_H

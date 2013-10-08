@@ -93,17 +93,24 @@ void ZTorrent::handleError(QNetworkReply::NetworkError error)
     default:
         message = "Unknown error"; break;
     }
-    QMessageBox::critical(this, "Error", message);
+    QMessageBox::StandardButton btn = QMessageBox::critical(this, "Error", message, QMessageBox::Ok | QMessageBox::Retry);
+    if (btn == QMessageBox::Retry)
+        on_lineEdit_returnPressed();
 }
 
 void ZTorrent::torrentAdded(QString result, QString name)
 {
     if (result == "success") {
         QMessageBox::information(this, "Transmission", name+" added for download");
+        ui->treeWidget->setEnabled(true);
     } else {
-        QMessageBox::critical(this, "Transmission", "Error: "+result);
+        QMessageBox::StandardButton btn = QMessageBox::critical(this, "Transmission", "Error: "+result, QMessageBox::Ok | QMessageBox::Retry);
+        if (btn == QMessageBox::Retry) {
+            addToTransmission(m_lastAction.first, m_lastAction.second);
+        } else {
+            ui->treeWidget->setEnabled(true);
+        }
     }
-    ui->treeWidget->setEnabled(true);
 }
 
 void ZTorrent::menuAction(QAction *action)
@@ -145,6 +152,7 @@ void ZTorrent::copyToClipboard(Torrent t)
 void ZTorrent::addToTransmission(Torrent t, TrBackend backend)
 {
     ui->treeWidget->setEnabled(false);
+    m_lastAction.first = t; m_lastAction.second = backend;
     m_transmission->addTorrent(t["torcacheUrl"], backend);
 }
 
