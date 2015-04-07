@@ -94,8 +94,11 @@ void ZTorrent::handleError(QNetworkReply::NetworkError error)
         message = "Unknown error"; break;
     }
     QMessageBox::StandardButton btn = QMessageBox::critical(this, "Error", message, QMessageBox::Ok | QMessageBox::Retry);
-    if (btn == QMessageBox::Retry)
+    if (btn == QMessageBox::Retry) {
         on_lineEdit_returnPressed();
+    } else {
+        ui->statusBar->showMessage("Error");
+    }
 }
 
 void ZTorrent::torrentAdded(QString result, QString name)
