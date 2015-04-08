@@ -5,7 +5,7 @@
 #include <QDomDocument>
 #include <QMessageBox>
 
-#define TORRENTZ_FEED_URL "http://torrentz.in/feed"
+#define TORRENTZ_FEED_URL "https://torrentz.in/feed"
 
 SearchEngine::SearchEngine(QObject *parent) :
     QObject(parent),
