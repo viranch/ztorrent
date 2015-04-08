@@ -5,6 +5,8 @@
 #include <QDomDocument>
 #include <QMessageBox>
 
+#define TORRENTZ_FEED_URL "http://torrentz.in/feed"
+
 SearchEngine::SearchEngine(QObject *parent) :
     QObject(parent),
     m_manager(new QNetworkAccessManager(this))
@@ -19,7 +21,7 @@ SearchEngine::~SearchEngine()
 
 void SearchEngine::search(QString searchString)
 {
-    QUrl searchUrl = QUrl("http://torrentz.in/feed?q="+searchString);
+    QUrl searchUrl = QUrl(QString(TORRENTZ_FEED_URL) + "?q=" + searchString);
     m_manager->get(QNetworkRequest(searchUrl));
 }
 
