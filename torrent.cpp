@@ -29,7 +29,8 @@ Torrent::Torrent(QDomElement elem) :
     }
 }
 
-void Torrent::addChild(QString tagName, QString text) {
+void Torrent::addChild(QString tagName, QString text)
+{
     QDomDocument doc;
 
     QDomElement childNode = doc.createElement(tagName);
