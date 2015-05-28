@@ -16,6 +16,7 @@ public:
 
 private:
     void addChild(QString tagName, QString text);
+    QString chronicDuration(qint64 secs);
 };
 
 Q_DECLARE_METATYPE(Torrent)
