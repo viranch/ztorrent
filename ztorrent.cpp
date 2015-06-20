@@ -24,10 +24,17 @@ ZTorrent::ZTorrent(QWidget *parent) :
 
     updateActionInfo();
 
+    // search finished
     connect(m_engine, SIGNAL(finished(QList<Torrent>)), this, SLOT(showResults(QList<Torrent>)));
+
+    // search error
     connect(m_engine, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
-    connect(m_transmission, SIGNAL(finished(QString,QString)), this, SLOT(torrentAdded(QString,QString)));
+
+    // torrent action triggered
     connect(m_contextMenu, SIGNAL(triggered(QAction*)), this, SLOT(menuAction(QAction*)));
+
+    // torrent added to transmission
+    connect(m_transmission, SIGNAL(finished(QString,QString)), this, SLOT(torrentAdded(QString,QString)));
 }
 
 ZTorrent::~ZTorrent()
