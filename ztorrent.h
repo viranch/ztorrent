@@ -5,6 +5,7 @@
 #include <QTreeWidgetItem>
 #include <QAbstractButton>
 #include <QNetworkReply>
+#include <QSignalMapper>
 
 #include "torrent.h"
 #include "trbackend.h"
@@ -32,7 +33,10 @@ private slots:
     void handleError(QNetworkReply::NetworkError e);
     void copyToClipboard(Torrent t);
     void addToTransmission(Torrent t, TrBackend backend);
-    void menuAction(QAction *action);
+    QAction* addContextMenuAction(QMenu *menu, const QString &actionText, QVariant &actionData, QSignalMapper *mapper);
+    void openBrowser(QObject *obj);
+    void copyLink(QObject *obj);
+    void addToTransmission(QObject *obj);
     void updateActionInfo();
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
@@ -48,6 +52,9 @@ private:
     Transmission *m_transmission;
     Settings *m_settings;
     QMenu *m_contextMenu;
+    QSignalMapper *m_openBrowserMapper;
+    QSignalMapper *m_copyLinkMapper;
+    QSignalMapper *m_addToTransmissionMapper;
     QPair<Torrent,TrBackend> m_lastAction;
 };
 

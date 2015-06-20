@@ -24,6 +24,10 @@ ZTorrent::ZTorrent(QWidget *parent) :
 
     updateActionInfo();
 
+    m_openBrowserMapper = new QSignalMapper(this);
+    m_copyLinkMapper = new QSignalMapper(this);
+    m_addToTransmissionMapper = new QSignalMapper(this);
+
     // search finished
     connect(m_engine, SIGNAL(finished(QList<Torrent>)), this, SLOT(showResults(QList<Torrent>)));
 
@@ -31,7 +35,9 @@ ZTorrent::ZTorrent(QWidget *parent) :
     connect(m_engine, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
 
     // torrent action triggered
-    connect(m_contextMenu, SIGNAL(triggered(QAction*)), this, SLOT(menuAction(QAction*)));
+    connect(m_openBrowserMapper, SIGNAL(mapped(QObject*)), this, SLOT(openBrowser(QObject*)));
+    connect(m_copyLinkMapper, SIGNAL(mapped(QObject*)), this, SLOT(copyLink(QObject*)));
+    connect(m_addToTransmissionMapper, SIGNAL(mapped(QObject*)), this, SLOT(addToTransmission(QObject*)));
 
     // torrent added to transmission
     connect(m_transmission, SIGNAL(finished(QString,QString)), this, SLOT(torrentAdded(QString,QString)));
@@ -126,20 +132,24 @@ void ZTorrent::torrentAdded(QString result, QString name)
     }
 }
 
-void ZTorrent::menuAction(QAction *action)
+void ZTorrent::openBrowser(QObject *obj)
 {
-    QString text = action->text();
-    QVariant data = action->data();
+    QAction *action = qobject_cast<QAction*>(obj);
+    QUrl link(action->data().value<Torrent>()["torrentzUrl"]);
+    QDesktopServices::openUrl(link);
+}
 
-    if (text == "Open with browser...") {
-        QUrl link(data.value<Torrent>()["torrentzUrl"]);
-        QDesktopServices::openUrl(link);
-    } else if (text == "Copy .torrent link") {
-        copyToClipboard(data.value<Torrent>());
-    } else {
-        QList<QVariant> stuff = data.toList();
-        addToTransmission(stuff[0].value<Torrent>(), stuff[1].value<TrBackend>());
-    }
+void ZTorrent::copyLink(QObject *obj)
+{
+    QAction *action = qobject_cast<QAction*>(obj);
+    copyToClipboard(action->data().value<Torrent>());
+}
+
+void ZTorrent::addToTransmission(QObject *obj)
+{
+    QAction *action = qobject_cast<QAction*>(obj);
+    QList<QVariant> stuff = action->data().toList();
+    addToTransmission(stuff[0].value<Torrent>(), stuff[1].value<TrBackend>());
 }
 
 void ZTorrent::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
@@ -188,6 +198,14 @@ void ZTorrent::on_buttonBox_clicked(QAbstractButton *button)
     }
 }
 
+QAction* ZTorrent::addContextMenuAction(QMenu *menu, const QString &actionText, QVariant &actionData, QSignalMapper *mapper)
+{
+    QAction *action = menu->addAction(actionText, mapper, SLOT(map()));
+    action->setData(actionData);
+    mapper->setMapping(action, action);
+    return action;
+}
+
 void ZTorrent::on_treeWidget_customContextMenuRequested(const QPoint &pos)
 {
     QTreeWidgetItem *item = ui->treeWidget->itemAt(pos);
@@ -195,12 +213,9 @@ void ZTorrent::on_treeWidget_customContextMenuRequested(const QPoint &pos)
 
     m_contextMenu->clear();
 
-    QAction *openAct = m_contextMenu->addAction("Open with browser...");
+    addContextMenuAction(m_contextMenu, "Open with browser...", torrentData, m_openBrowserMapper);
     m_contextMenu->addSeparator();
-    QAction *copyAct = m_contextMenu->addAction("Copy .torrent link");
-
-    openAct->setData(torrentData);
-    copyAct->setData(torrentData);
+    addContextMenuAction(m_contextMenu, "Copy .torrent link", torrentData, m_copyLinkMapper);
 
     QList<TrBackend> trBackends = m_settings->backends();
     QMenu *trMenu;
@@ -210,11 +225,12 @@ void ZTorrent::on_treeWidget_customContextMenuRequested(const QPoint &pos)
             QString label = b["host"].toString();
             if (b["is_default"].toBool())
                 label += " (Default)";
-            QAction *trAct = trMenu->addAction(label);
 
             QList<QVariant> data;
             data << torrentData << QVariant::fromValue(b);
-            trAct->setData(data);
+            QVariant trData(data);
+
+            addContextMenuAction(trMenu, label, trData, m_addToTransmissionMapper);
         }
     }
 
