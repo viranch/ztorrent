@@ -10,6 +10,8 @@
     <string>????</string>
     <key>CFBundleIdentifier</key>
     <string>org.viranch.ztorrent</string>
+    <key>CFBundleIconFile</key>
+    <string>appicon</string>
     <key>CFBundleExecutable</key>
     <string>@EXECUTABLE@</string>
 </dict>

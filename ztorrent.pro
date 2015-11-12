@@ -30,6 +30,8 @@ HEADERS  += ztorrent.h \
 RESOURCES += \
     resources.qrc
 
+ICON = images/appicon.icns
+
 FORMS    += ztorrent.ui \
     settings.ui \
     trdialog.ui
